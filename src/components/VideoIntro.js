@@ -48,9 +48,9 @@ export default function VideoIntro() {
         autoPlay muted loop playsInline preload="auto"
         aria-label="GVV Driving School cinematic intro"
         style={{
-          position: 'absolute', top: '50%', left: '50%',
-          minWidth: '100%', minHeight: '100%', width: 'auto', height: 'auto',
-          transform: 'translate(-50%, -50%)', objectFit: 'cover',
+          position: 'absolute', top: 0, left: 0,
+          width: '100%', height: '100%',
+          objectFit: 'cover',
         }}
       >
         <source src={`${process.env.PUBLIC_URL}/car.mp4`} type="video/mp4" />
@@ -80,7 +80,7 @@ export default function VideoIntro() {
         textAlign: 'center',
         width: '100%',
         maxWidth: 720,
-        padding: '0 32px',
+        padding: '0 20px',
       }}>
 
         {/* Top gold rule */}
@@ -138,6 +138,7 @@ export default function VideoIntro() {
             display: 'flex', justifyContent: 'center',
             gap: 'clamp(20px, 5vw, 56px)',
             marginTop: 28,
+            flexWrap: 'wrap',
           }}
         >
           {[

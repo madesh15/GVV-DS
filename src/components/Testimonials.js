@@ -29,7 +29,7 @@ export default function Testimonials() {
   const t = testimonials[idx];
 
   return (
-    <section id="reviews" style={{ background: '#06060a', padding: '120px 40px', position: 'relative', overflow: 'hidden' }}>
+    <section id="reviews" style={{ background: '#06060a', position: 'relative', overflow: 'hidden' }}>
       {/* Giant quote mark */}
       <div style={{ position: 'absolute', top: 60, left: '50%', transform: 'translateX(-50%)', fontFamily: "'Playfair Display', serif", fontSize: 300, color: 'rgba(212,166,54,0.04)', lineHeight: 1, userSelect: 'none', pointerEvents: 'none' }}>"</div>
 

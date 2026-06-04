@@ -10,7 +10,7 @@ const features = [
 
 export default function Experience() {
   return (
-    <section id="experience" style={{ background: '#09090f', padding: '120px 40px', position: 'relative', overflow: 'hidden' }}>
+    <section id="experience" style={{ background: '#09090f', position: 'relative', overflow: 'hidden' }}>
 
       {/* Subtle gold dot pattern */}
       <div style={{

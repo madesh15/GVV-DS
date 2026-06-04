@@ -2,9 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import Logo from './Logo';
 
-export default function Navbar({ active, setActive }) {
+export default function Navbar({ active, setActive, open, setOpen }) {
   const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -33,7 +32,11 @@ export default function Navbar({ active, setActive }) {
     setOpen(false);
     setAboutOpen(false);
     const el = document.getElementById(link.toLowerCase());
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    if (el) {
+      const offset = window.innerWidth <= 768 ? 72 : 84;
+      const top = Math.max(0, el.getBoundingClientRect().top + window.pageYOffset - offset);
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
   };
 
   const NavBtn = ({ label, id }) => (
@@ -60,6 +63,7 @@ export default function Navbar({ active, setActive }) {
       boxShadow: scrolled ? '0 8px 32px rgba(0,0,0,0.45)' : '0 4px 24px rgba(0,0,0,0.35)',
       transition: 'all 0.4s ease',
       padding: '0 40px',
+      '--logo-height': scrolled ? '72px' : '90px',
     }}>
       <div style={{
         maxWidth: 1200, margin: '0 auto',
@@ -72,7 +76,7 @@ export default function Navbar({ active, setActive }) {
 
         {/* LEFT — Logo */}
         <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
-          <Logo height={120} onClick={() => nav('Home')} />
+          <Logo onClick={() => nav('Home')} style={{ height: 'var(--logo-height)', transition: 'height 0.3s ease' }} />
         </div>
 
         {/* CENTER — Nav links absolutely centered */}
@@ -197,81 +201,15 @@ export default function Navbar({ active, setActive }) {
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      {open && (
-        <div style={{
-          position: 'fixed',
-          top: 72,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 999,
-          background: '#050506',
-          color: '#f5f0e4',
-          padding: '24px 18px 32px',
-          display: 'grid',
-          gap: 12,
-          overflowY: 'auto',
-          WebkitOverflowScrolling: 'touch',
-          boxShadow: '0 20px 80px rgba(0,0,0,0.55)',
-        }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, letterSpacing: 3, fontSize: 20, color: '#d4a636' }}>
-              MENU
-            </div>
-            <button onClick={() => setOpen(false)} style={{ background: 'transparent', border: 'none', color: '#f5f0e4', cursor: 'pointer' }}>
-              <X size={28} />
-            </button>
-          </div>
-
-          {['Home', 'About', 'Experience', 'Gallery', 'Enquiries', 'Reviews', 'Contact'].map(l => (
-            <button
-              key={l}
-              onClick={() => nav(l)}
-              style={{
-                width: '100%',
-                textAlign: 'left',
-                background: active === l ? '#191919' : 'rgba(255,255,255,0.04)',
-                border: '1px solid rgba(255,255,255,0.08)',
-                borderRadius: 14,
-                padding: '18px 20px',
-                fontFamily: "'Barlow Condensed', sans-serif",
-                fontWeight: 800,
-                fontSize: 20,
-                letterSpacing: 2,
-                textTransform: 'uppercase',
-                color: active === l ? '#d4a636' : '#f5f0e4',
-                cursor: 'pointer',
-                transition: 'background 0.25s ease, transform 0.25s ease',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.background = '#232323';
-                e.currentTarget.style.transform = 'translateX(2px)';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.background = active === l ? '#191919' : 'rgba(255,255,255,0.04)';
-                e.currentTarget.style.transform = 'translateX(0)';
-              }}
-            >
-              {l}
-            </button>
-          ))}
-        </div>
-      )}
-
       <style>{`
         @keyframes fadeDown {
           from { opacity: 0; transform: translateX(-50%) translateY(-8px); }
           to   { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
-        @keyframes slideDown {
-          from { opacity: 0; transform: translateY(-10px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
         @media (max-width: 768px) {
           .desktop-nav { display: none !important; }
           .hamburger { display: block !important; }
-          nav { padding: 0 20px !important; }
+          nav { padding: 0 20px !important; --logo-height: 48px !important; }
           nav > div { height: 72px !important; }
         }
       `}</style>

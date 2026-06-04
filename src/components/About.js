@@ -12,7 +12,7 @@ export default function About() {
   ];
 
   return (
-    <section id="about" style={{ background: '#09090f', padding: '120px 40px' }}>
+    <section id="about" style={{ background: '#09090f' }}>
       <div style={{
         maxWidth: 1200, margin: '0 auto',
         display: 'grid', gridTemplateColumns: '1fr 1fr',

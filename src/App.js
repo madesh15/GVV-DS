@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
+import MobileMenu from './components/MobileMenu';
 import VideoIntro from './components/VideoIntro';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -28,9 +29,11 @@ const GlobalStyle = () => (
     section {
       width: 100%;
       scroll-margin-top: 100px;
+      padding: 120px 40px;
     }
     #video-intro {
       min-height: 560px;
+      padding: 0 !important; /* Ensure intro video section has no padding overlay */
     }
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: #06060a; }
@@ -41,8 +44,8 @@ const GlobalStyle = () => (
     select option { background: #0d0d14; color: #f5f0e4; }
     @media (max-width: 768px) {
       main { padding-top: 72px; }
-      section { scroll-margin-top: 88px; }
-      #video-intro { min-height: 520px !important; height: auto !important; }
+      section { scroll-margin-top: 88px; padding: 60px 20px !important; }
+      #video-intro { min-height: 520px !important; height: auto !important; padding: 0 !important; }
       #video-intro video { min-height: 100%; min-width: 100%; }
     }
   `}</style>
@@ -70,6 +73,7 @@ const WhatsAppBtn = () => (
 
 export default function App() {
   const [active, setActive] = useState('Home');
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const sectionMap = {
@@ -113,7 +117,8 @@ export default function App() {
   return (
     <>
       <GlobalStyle />
-      <Navbar active={active} setActive={setActive} />
+      <Navbar active={active} setActive={setActive} open={open} setOpen={setOpen} />
+      <MobileMenu open={open} setOpen={setOpen} active={active} setActive={setActive} />
       <main>
         <Hero setActive={setActive} />
         <VideoIntro setActive={setActive} />

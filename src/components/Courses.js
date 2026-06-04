@@ -14,7 +14,7 @@ export default function Enquiries() {
   const [hovered, setHovered] = useState(null);
 
   return (
-    <section id="enquiries" style={{ background: '#06060a', padding: '120px 40px' }}>
+    <section id="enquiries" style={{ background: '#06060a' }}>
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: 48 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginBottom: 20 }}>

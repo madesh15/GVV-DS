@@ -16,7 +16,7 @@ export default function Gallery() {
   const [lightbox, setLightbox] = useState(null);
 
   return (
-    <section id="gallery" style={{ background: '#06060a', padding: '120px 40px' }}>
+    <section id="gallery" style={{ background: '#06060a' }}>
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: 64 }}>

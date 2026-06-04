@@ -201,23 +201,43 @@ export default function Navbar({ active, setActive }) {
       {open && (
         <div style={{
           background: 'rgba(6,6,10,0.98)', backdropFilter: 'blur(20px)',
-          padding: '20px 40px 30px',
+          padding: '24px 20px 32px',
           borderTop: '1px solid rgba(212,166,54,0.15)',
           animation: 'slideDown 0.3s ease',
+          display: 'grid',
+          gap: 10,
         }}>
           {['Home', 'About', 'Experience', 'Gallery', 'Enquiries', 'Reviews', 'Contact'].map(l => (
-            <div key={l} onClick={() => nav(l)} style={{
-              padding: '14px 0',
-              fontFamily: "'Barlow Condensed', sans-serif",
-              fontWeight: 600, fontSize: 20, letterSpacing: 3,
-              textTransform: 'uppercase',
-              color: active === l ? '#d4a636' : '#bbb',
-              cursor: 'pointer',
-              borderBottom: '1px solid rgba(255,255,255,0.05)',
-              paddingLeft: ['Experience', 'Gallery'].includes(l) ? 20 : 0,
-              borderLeft: ['Experience', 'Gallery'].includes(l)
-                ? '2px solid rgba(212,166,54,0.3)' : 'none',
-            }}>{l}</div>
+            <button
+              key={l}
+              onClick={() => nav(l)}
+              style={{
+                width: '100%',
+                textAlign: 'left',
+                background: active === l ? 'rgba(212,166,54,0.12)' : 'transparent',
+                border: '1px solid rgba(255,255,255,0.08)',
+                borderRadius: 8,
+                padding: '16px 18px',
+                fontFamily: "'Barlow Condensed', sans-serif",
+                fontWeight: 700,
+                fontSize: 18,
+                letterSpacing: 2.5,
+                textTransform: 'uppercase',
+                color: active === l ? '#f5f0e4' : '#eee',
+                cursor: 'pointer',
+                transition: 'all 0.25s ease',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = active === l ? 'rgba(212,166,54,0.14)' : 'rgba(255,255,255,0.05)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = active === l ? 'rgba(212,166,54,0.12)' : 'transparent';
+              }}
+            >
+              <span style={{ display: 'block', fontSize: 18, color: active === l ? '#d4a636' : '#eee' }}>
+                {l}
+              </span>
+            </button>
           ))}
         </div>
       )}

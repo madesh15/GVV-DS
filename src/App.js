@@ -20,6 +20,17 @@ const GlobalStyle = () => (
       color: #f5f0e4;
       font-family: 'Barlow', sans-serif;
       overflow-x: hidden;
+      min-height: 100%;
+    }
+    main {
+      padding-top: 84px;
+    }
+    section {
+      width: 100%;
+      scroll-margin-top: 100px;
+    }
+    #video-intro {
+      min-height: 560px;
     }
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: #06060a; }
@@ -28,6 +39,12 @@ const GlobalStyle = () => (
     input, select, textarea { color: #f5f0e4; }
     input::placeholder, textarea::placeholder { color: rgba(245,240,228,0.3); }
     select option { background: #0d0d14; color: #f5f0e4; }
+    @media (max-width: 768px) {
+      main { padding-top: 72px; }
+      section { scroll-margin-top: 88px; }
+      #video-intro { min-height: 520px !important; height: auto !important; }
+      #video-intro video { min-height: 100%; min-width: 100%; }
+    }
   `}</style>
 );
 

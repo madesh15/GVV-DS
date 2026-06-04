@@ -27,12 +27,20 @@ export default function Hero({ setActive }) {
   }, []);
 
   const scroll = (id) => {
-    setActive(id.charAt(0).toUpperCase() + id.slice(1));
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    const normalized = id.toLowerCase();
+    setActive(normalized.charAt(0).toUpperCase() + normalized.slice(1));
+    const el = document.getElementById(normalized);
+    if (el) {
+      const offset = 90;
+      const top = Math.max(0, el.getBoundingClientRect().top + window.pageYOffset - offset);
+      window.scrollTo({ top, behavior: 'smooth' });
+    } else {
+      window.location.hash = normalized;
+    }
   };
 
   return (
-    <section id="hero-content" style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
+    <section id="home" style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
       {/* Background image */}
       <div style={{
         position: 'absolute', inset: 0,

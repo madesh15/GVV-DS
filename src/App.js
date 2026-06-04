@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import VideoIntro from './components/VideoIntro';
 import Hero from './components/Hero';
@@ -21,14 +21,6 @@ const GlobalStyle = () => (
       font-family: 'Barlow', sans-serif;
       overflow-x: hidden;
     }
-    main { padding-top: 84px; }
-    section { scroll-margin-top: 84px; }
-    .video-intro-section { height: calc(100vh - 84px) !important; }
-    @media (max-width: 768px) {
-      main { padding-top: 72px; }
-      section { scroll-margin-top: 72px; }
-      .video-intro-section { height: calc(100vh - 72px) !important; }
-    }
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: #06060a; }
     ::-webkit-scrollbar-thumb { background: #d4a636; border-radius: 3px; }
@@ -41,7 +33,7 @@ const GlobalStyle = () => (
 
 /* Floating WhatsApp button */
 const WhatsAppBtn = () => (
-  <a href="https://wa.me/919876543210?text=Hi%2C%20I%20want%20to%20know%20more%20about%20GVV%20Driving%20School" target="_blank" rel="noopener noreferrer"
+  <a href="https://wa.me/919884772048?text=Hi%2C%20I%20want%20to%20know%20more%20about%20GVV%20Driving%20School" target="_blank" rel="noopener noreferrer"
     style={{
       position: 'fixed', bottom: 28, right: 28, zIndex: 999,
       width: 56, height: 56, borderRadius: '50%',
@@ -62,13 +54,52 @@ const WhatsAppBtn = () => (
 export default function App() {
   const [active, setActive] = useState('Home');
 
+  useEffect(() => {
+    const sectionMap = {
+      home:       'Home',
+      about:      'About',
+      experience: 'Experience',
+      gallery:    'Gallery',
+      enquiries:  'Enquiries',
+      reviews:    'Reviews',
+      contact:    'Contact',
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Among all currently intersecting sections, pick the most visible one
+        const visible = entries
+          .filter(e => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        if (visible.length > 0) {
+          const id = visible[0].target.id;
+          if (sectionMap[id]) setActive(sectionMap[id]);
+        }
+      },
+      {
+        root: null,
+        // Section is "active" when it occupies the top 20–40% band of the viewport
+        rootMargin: '-20% 0px -60% 0px',
+        threshold: 0,
+      }
+    );
+
+    Object.keys(sectionMap).forEach(id => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
       <GlobalStyle />
       <Navbar active={active} setActive={setActive} />
       <main>
-        <VideoIntro setActive={setActive} />
         <Hero setActive={setActive} />
+        <VideoIntro setActive={setActive} />
         <About />
         <Enquiries />
         <Experience />

@@ -200,13 +200,30 @@ export default function Navbar({ active, setActive }) {
       {/* Mobile Menu */}
       {open && (
         <div style={{
-          background: 'rgba(6,6,10,0.98)', backdropFilter: 'blur(20px)',
-          padding: '24px 20px 32px',
-          borderTop: '1px solid rgba(212,166,54,0.15)',
-          animation: 'slideDown 0.3s ease',
+          position: 'fixed',
+          top: 72,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 999,
+          background: '#050506',
+          color: '#f5f0e4',
+          padding: '24px 18px 32px',
           display: 'grid',
-          gap: 10,
+          gap: 12,
+          overflowY: 'auto',
+          WebkitOverflowScrolling: 'touch',
+          boxShadow: '0 20px 80px rgba(0,0,0,0.55)',
         }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 800, letterSpacing: 3, fontSize: 20, color: '#d4a636' }}>
+              MENU
+            </div>
+            <button onClick={() => setOpen(false)} style={{ background: 'transparent', border: 'none', color: '#f5f0e4', cursor: 'pointer' }}>
+              <X size={28} />
+            </button>
+          </div>
+
           {['Home', 'About', 'Experience', 'Gallery', 'Enquiries', 'Reviews', 'Contact'].map(l => (
             <button
               key={l}
@@ -214,29 +231,29 @@ export default function Navbar({ active, setActive }) {
               style={{
                 width: '100%',
                 textAlign: 'left',
-                background: active === l ? 'rgba(212,166,54,0.12)' : 'transparent',
+                background: active === l ? '#191919' : 'rgba(255,255,255,0.04)',
                 border: '1px solid rgba(255,255,255,0.08)',
-                borderRadius: 8,
-                padding: '16px 18px',
+                borderRadius: 14,
+                padding: '18px 20px',
                 fontFamily: "'Barlow Condensed', sans-serif",
-                fontWeight: 700,
-                fontSize: 18,
-                letterSpacing: 2.5,
+                fontWeight: 800,
+                fontSize: 20,
+                letterSpacing: 2,
                 textTransform: 'uppercase',
-                color: active === l ? '#f5f0e4' : '#eee',
+                color: active === l ? '#d4a636' : '#f5f0e4',
                 cursor: 'pointer',
-                transition: 'all 0.25s ease',
+                transition: 'background 0.25s ease, transform 0.25s ease',
               }}
               onMouseEnter={e => {
-                e.currentTarget.style.background = active === l ? 'rgba(212,166,54,0.14)' : 'rgba(255,255,255,0.05)';
+                e.currentTarget.style.background = '#232323';
+                e.currentTarget.style.transform = 'translateX(2px)';
               }}
               onMouseLeave={e => {
-                e.currentTarget.style.background = active === l ? 'rgba(212,166,54,0.12)' : 'transparent';
+                e.currentTarget.style.background = active === l ? '#191919' : 'rgba(255,255,255,0.04)';
+                e.currentTarget.style.transform = 'translateX(0)';
               }}
             >
-              <span style={{ display: 'block', fontSize: 18, color: active === l ? '#d4a636' : '#eee' }}>
-                {l}
-              </span>
+              {l}
             </button>
           ))}
         </div>

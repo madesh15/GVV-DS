@@ -55,12 +55,59 @@ const GlobalStyle = () => (
   `}</style>
 );
 
-/* Floating WhatsApp button with dual-number choice */
+/* Floating draggable WhatsApp button with dual-number choice */
 const WhatsAppBtn = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [pos, setPos] = useState({ right: 28, bottom: 28 });
+  const dragging = React.useRef(false);
+  const hasMoved = React.useRef(false);
+  const startRef = React.useRef({ x: 0, y: 0, right: 28, bottom: 28 });
+  const containerRef = React.useRef(null);
+
+  const getClientXY = (e) => {
+    if (e.touches) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    return { x: e.clientX, y: e.clientY };
+  };
+
+  const onDragStart = (e) => {
+    e.preventDefault();
+    dragging.current = true;
+    hasMoved.current = false;
+    const { x, y } = getClientXY(e);
+    startRef.current = { x, y, right: pos.right, bottom: pos.bottom };
+
+    const onMove = (ev) => {
+      if (!dragging.current) return;
+      const { x: cx, y: cy } = getClientXY(ev);
+      const dx = cx - startRef.current.x;
+      const dy = cy - startRef.current.y;
+      if (Math.abs(dx) > 4 || Math.abs(dy) > 4) hasMoved.current = true;
+      const newRight = Math.max(8, Math.min(window.innerWidth - 64, startRef.current.right - dx));
+      const newBottom = Math.max(8, Math.min(window.innerHeight - 64, startRef.current.bottom + dy));
+      setPos({ right: newRight, bottom: newBottom });
+      if (isOpen) setIsOpen(false);
+    };
+
+    const onUp = () => {
+      dragging.current = false;
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+      window.removeEventListener('touchmove', onMove);
+      window.removeEventListener('touchend', onUp);
+    };
+
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+    window.addEventListener('touchmove', onMove, { passive: false });
+    window.addEventListener('touchend', onUp);
+  };
+
+  const handleClick = () => {
+    if (!hasMoved.current) setIsOpen(o => !o);
+  };
 
   return (
-    <div style={{ position: 'fixed', bottom: 28, right: 28, zIndex: 999, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+    <div ref={containerRef} style={{ position: 'fixed', bottom: pos.bottom, right: pos.right, zIndex: 999, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
       {isOpen && (
         <div style={{
           background: 'rgba(10, 10, 16, 0.95)',
@@ -85,15 +132,9 @@ const WhatsAppBtn = () => {
             rel="noopener noreferrer"
             onClick={() => setIsOpen(false)}
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              padding: '8px 12px',
-              borderRadius: '8px',
-              background: 'rgba(255, 255, 255, 0.03)',
-              color: '#f5f0e4',
-              textDecoration: 'none',
-              transition: 'all 0.2s ease',
-              border: '1px solid rgba(255, 255, 255, 0.05)',
+              display: 'flex', flexDirection: 'column', padding: '8px 12px', borderRadius: '8px',
+              background: 'rgba(255, 255, 255, 0.03)', color: '#f5f0e4', textDecoration: 'none',
+              transition: 'all 0.2s ease', border: '1px solid rgba(255, 255, 255, 0.05)',
             }}
             onMouseEnter={e => { e.currentTarget.style.background = 'rgba(212, 166, 54, 0.12)'; e.currentTarget.style.borderColor = 'rgba(212, 166, 54, 0.4)'; }}
             onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.05)'; }}
@@ -107,15 +148,9 @@ const WhatsAppBtn = () => {
             rel="noopener noreferrer"
             onClick={() => setIsOpen(false)}
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              padding: '8px 12px',
-              borderRadius: '8px',
-              background: 'rgba(255, 255, 255, 0.03)',
-              color: '#f5f0e4',
-              textDecoration: 'none',
-              transition: 'all 0.2s ease',
-              border: '1px solid rgba(255, 255, 255, 0.05)',
+              display: 'flex', flexDirection: 'column', padding: '8px 12px', borderRadius: '8px',
+              background: 'rgba(255, 255, 255, 0.03)', color: '#f5f0e4', textDecoration: 'none',
+              transition: 'all 0.2s ease', border: '1px solid rgba(255, 255, 255, 0.05)',
             }}
             onMouseEnter={e => { e.currentTarget.style.background = 'rgba(212, 166, 54, 0.12)'; e.currentTarget.style.borderColor = 'rgba(212, 166, 54, 0.4)'; }}
             onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.05)'; }}
@@ -126,15 +161,21 @@ const WhatsAppBtn = () => {
         </div>
       )}
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onMouseDown={onDragStart}
+        onTouchStart={onDragStart}
+        onClick={handleClick}
+        title="Drag to move"
         style={{
           width: 56, height: 56, borderRadius: '50%',
-          background: isOpen ? '#e53e3e' : '#25D366', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          background: isOpen ? '#e53e3e' : '#25D366',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
           boxShadow: isOpen ? '0 4px 20px rgba(229,62,62,0.4)' : '0 4px 20px rgba(37,211,102,0.4)',
-          transition: 'all 0.3s ease',
-          cursor: 'pointer',
-          border: 'none',
-          outline: 'none',
+          transition: 'background 0.3s ease, box-shadow 0.3s ease',
+          cursor: 'grab',
+          border: 'none', outline: 'none',
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
+          touchAction: 'none',
         }}
         onMouseEnter={e => {
           e.currentTarget.style.transform = 'scale(1.12)';

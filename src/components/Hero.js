@@ -70,7 +70,7 @@ export default function Hero({ setActive }) {
           <div className="hero-mobile-brand" style={{
             display: 'none',
             fontFamily: "'Playfair Display', serif",
-            fontSize: '36px',
+            fontSize: '52px',
             fontWeight: '900',
             letterSpacing: '4px',
             marginBottom: '24px',
@@ -80,16 +80,26 @@ export default function Hero({ setActive }) {
           }}>
             <span style={{ color: '#f5f0e4', textShadow: '0 2px 10px rgba(255,255,255,0.1)' }}>GVV</span>
             <span style={{
-              display: 'block',
-              fontFamily: "'Barlow', sans-serif",
-              fontSize: '13px',
-              fontWeight: '700',
-              color: '#d4a636',
-              letterSpacing: '5px',
-              marginTop: '4px',
-              textTransform: 'uppercase',
-              textShadow: '0 2px 8px rgba(212,166,54,0.2)'
-            }}>DRIVING SCHOOL</span>
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              marginTop: '6px',
+            }}>
+              <span style={{ flex: 1, height: '1px', background: 'linear-gradient(to right, transparent, #d4a636)' }}></span>
+              <span style={{
+                fontFamily: "'Playfair Display', serif",
+                fontSize: '15px',
+                fontWeight: '400',
+                fontStyle: 'italic',
+                color: '#d4a636',
+                letterSpacing: '4px',
+                textTransform: 'uppercase',
+                textShadow: '0 0 12px rgba(212,166,54,0.5)',
+                whiteSpace: 'nowrap',
+              }}>Driving School</span>
+              <span style={{ flex: 1, height: '1px', background: 'linear-gradient(to left, transparent, #d4a636)' }}></span>
+            </span>
           </div>
 
           {/* Badge */}

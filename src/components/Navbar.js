@@ -209,7 +209,7 @@ export default function Navbar({ active, setActive, open, setOpen }) {
         @media (max-width: 768px) {
           .desktop-nav { display: none !important; }
           .hamburger { display: block !important; }
-          nav { padding: 0 20px !important; --logo-height: 48px !important; }
+          nav { padding: 0 20px !important; --logo-height: 64px !important; }
           nav > div { height: 72px !important; }
         }
       `}</style>

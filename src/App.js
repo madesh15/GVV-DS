@@ -58,11 +58,20 @@ const GlobalStyle = () => (
 /* Floating draggable WhatsApp button with dual-number choice */
 const WhatsAppBtn = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [pos, setPos] = useState({ right: 28, bottom: 28 });
+  const btnSize = 56;
+  // Initial position: bottom-right corner
+  const [pos, setPos] = useState(null); // null until mounted
   const dragging = React.useRef(false);
   const hasMoved = React.useRef(false);
-  const startRef = React.useRef({ x: 0, y: 0, right: 28, bottom: 28 });
-  const containerRef = React.useRef(null);
+  const startRef = React.useRef({ mx: 0, my: 0, bx: 0, by: 0 });
+
+  // Set initial position after mount so window dimensions are known
+  React.useEffect(() => {
+    setPos({
+      left: window.innerWidth - btnSize - 28,
+      top: window.innerHeight - btnSize - 28,
+    });
+  }, []);
 
   const getClientXY = (e) => {
     if (e.touches) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
@@ -74,17 +83,21 @@ const WhatsAppBtn = () => {
     dragging.current = true;
     hasMoved.current = false;
     const { x, y } = getClientXY(e);
-    startRef.current = { x, y, right: pos.right, bottom: pos.bottom };
+    startRef.current = {
+      mx: x, my: y,
+      bx: pos ? pos.left : window.innerWidth - btnSize - 28,
+      by: pos ? pos.top  : window.innerHeight - btnSize - 28,
+    };
 
     const onMove = (ev) => {
       if (!dragging.current) return;
       const { x: cx, y: cy } = getClientXY(ev);
-      const dx = cx - startRef.current.x;
-      const dy = cy - startRef.current.y;
+      const dx = cx - startRef.current.mx;
+      const dy = cy - startRef.current.my;
       if (Math.abs(dx) > 4 || Math.abs(dy) > 4) hasMoved.current = true;
-      const newRight = Math.max(8, Math.min(window.innerWidth - 64, startRef.current.right - dx));
-      const newBottom = Math.max(8, Math.min(window.innerHeight - 64, startRef.current.bottom + dy));
-      setPos({ right: newRight, bottom: newBottom });
+      const newLeft = Math.max(0, Math.min(window.innerWidth  - btnSize, startRef.current.bx + dx));
+      const newTop  = Math.max(0, Math.min(window.innerHeight - btnSize, startRef.current.by + dy));
+      setPos({ left: newLeft, top: newTop });
       if (isOpen) setIsOpen(false);
     };
 
@@ -106,22 +119,33 @@ const WhatsAppBtn = () => {
     if (!hasMoved.current) setIsOpen(o => !o);
   };
 
+  if (!pos) return null; // wait for mount
+
+  // Flip popup to left if button is on the right half, up if near bottom
+  const popupLeft = pos.left > window.innerWidth / 2;
+  const popupUp   = pos.top  > window.innerHeight / 2;
+
   return (
-    <div ref={containerRef} style={{ position: 'fixed', bottom: pos.bottom, right: pos.right, zIndex: 999, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+    <div style={{ position: 'fixed', left: pos.left, top: pos.top, zIndex: 999, width: btnSize, height: btnSize }}>
       {isOpen && (
         <div style={{
+          position: 'absolute',
+          bottom: popupUp  ? btnSize + 12 : 'auto',
+          top:    popupUp  ? 'auto'        : btnSize + 12,
+          right:  popupLeft ? 0            : 'auto',
+          left:   popupLeft ? 'auto'       : 0,
           background: 'rgba(10, 10, 16, 0.95)',
           backdropFilter: 'blur(12px)',
           border: '1px solid rgba(212, 166, 54, 0.35)',
           borderRadius: '12px',
           padding: '14px',
-          marginBottom: '14px',
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)',
           display: 'flex',
           flexDirection: 'column',
           gap: '8px',
           width: '220px',
           animation: 'fadeInUp 0.2s ease',
+          zIndex: 1000,
         }}>
           <p style={{ color: '#d4a636', fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.7px', marginBottom: '6px', textAlign: 'center' }}>
             Chat on WhatsApp
@@ -166,11 +190,11 @@ const WhatsAppBtn = () => {
         onClick={handleClick}
         title="Drag to move"
         style={{
-          width: 56, height: 56, borderRadius: '50%',
+          width: btnSize, height: btnSize, borderRadius: '50%',
           background: isOpen ? '#e53e3e' : '#25D366',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           boxShadow: isOpen ? '0 4px 20px rgba(229,62,62,0.4)' : '0 4px 20px rgba(37,211,102,0.4)',
-          transition: 'background 0.3s ease, box-shadow 0.3s ease',
+          transition: 'background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease',
           cursor: 'grab',
           border: 'none', outline: 'none',
           userSelect: 'none',

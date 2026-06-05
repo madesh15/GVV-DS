@@ -67,6 +67,31 @@ export default function Hero({ setActive }) {
       {/* Content */}
       <div className="hero-content" style={{ position: 'relative', zIndex: 2, maxWidth: 1200, margin: '0 auto', width: '100%' }}>
         <div style={{ maxWidth: 760 }} className="hero-text-wrapper">
+          <div className="hero-mobile-brand" style={{
+            display: 'none',
+            fontFamily: "'Playfair Display', serif",
+            fontSize: '36px',
+            fontWeight: '900',
+            letterSpacing: '4px',
+            marginBottom: '24px',
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? 'translateY(0)' : 'translateY(15px)',
+            transition: 'all 0.7s ease',
+          }}>
+            <span style={{ color: '#f5f0e4', textShadow: '0 2px 10px rgba(255,255,255,0.1)' }}>GVV</span>
+            <span style={{
+              display: 'block',
+              fontFamily: "'Barlow', sans-serif",
+              fontSize: '13px',
+              fontWeight: '700',
+              color: '#d4a636',
+              letterSpacing: '5px',
+              marginTop: '4px',
+              textTransform: 'uppercase',
+              textShadow: '0 2px 8px rgba(212,166,54,0.2)'
+            }}>DRIVING SCHOOL</span>
+          </div>
+
           {/* Badge */}
           <div className="hero-badge" style={{
             display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 32,
@@ -213,6 +238,9 @@ export default function Hero({ setActive }) {
             flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
+          }
+          .hero-mobile-brand {
+            display: block !important;
           }
           .hero-badge {
             margin-bottom: 24px !important;

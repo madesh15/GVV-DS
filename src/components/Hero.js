@@ -65,10 +65,10 @@ export default function Hero({ setActive }) {
       }} />
 
       {/* Content */}
-      <div style={{ position: 'relative', zIndex: 2, maxWidth: 1200, margin: '0 auto', padding: '100px 40px 60px', width: '100%' }}>
-        <div style={{ maxWidth: 760 }}>
+      <div className="hero-content" style={{ position: 'relative', zIndex: 2, maxWidth: 1200, margin: '0 auto', width: '100%' }}>
+        <div style={{ maxWidth: 760 }} className="hero-text-wrapper">
           {/* Badge */}
-          <div style={{
+          <div className="hero-badge" style={{
             display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 32,
             background: 'rgba(212,166,54,0.1)', border: '1px solid rgba(212,166,54,0.35)',
             padding: '7px 18px', borderRadius: 100,
@@ -102,7 +102,7 @@ export default function Hero({ setActive }) {
           </h1>
 
           {/* Sub */}
-          <p style={{
+          <p className="hero-sub" style={{
             fontFamily: "'Barlow', sans-serif", fontWeight: 300, fontSize: 18,
             color: 'rgba(245,240,228,0.7)', lineHeight: 1.8, maxWidth: 520, marginBottom: 48,
             opacity: loaded ? 1 : 0, transform: loaded ? 'translateY(0)' : 'translateY(20px)',
@@ -112,7 +112,7 @@ export default function Hero({ setActive }) {
           </p>
 
           {/* CTA Buttons */}
-          <div style={{
+          <div className="hero-ctas" style={{
             display: 'flex', gap: 16, flexWrap: 'wrap',
             opacity: loaded ? 1 : 0, transform: loaded ? 'translateY(0)' : 'translateY(20px)',
             transition: 'all 0.8s ease 0.7s',
@@ -140,7 +140,7 @@ export default function Hero({ setActive }) {
           </div>
 
           {/* Trust badges */}
-          <div style={{
+          <div className="hero-trust" style={{
             display: 'flex', gap: 24, marginTop: 60, flexWrap: 'wrap',
             opacity: loaded ? 1 : 0, transition: 'all 0.8s ease 0.9s',
           }}>
@@ -185,8 +185,58 @@ export default function Hero({ setActive }) {
       </div>
 
       <style>{`
+        #home {
+          padding: 0 !important;
+          min-height: calc(100vh - 84px) !important;
+          display: flex !important;
+          align-items: center !important;
+        }
+        .hero-content {
+          padding: 60px 40px !important;
+        }
         @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)} }
         @media (max-width: 900px) { .stats-side { display: none !important; } }
+        @media (max-width: 768px) {
+          #home {
+            min-height: calc(100vh - 72px) !important;
+          }
+          .hero-content {
+            padding: 24px 20px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center !important;
+          }
+          .hero-text-wrapper {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+          }
+          .hero-badge {
+            margin-bottom: 24px !important;
+          }
+          .hero-sub {
+            margin: 0 auto 32px !important;
+            text-align: center !important;
+            font-size: 15px !important;
+          }
+          .hero-ctas {
+            justify-content: center !important;
+            gap: 12px !important;
+            width: 100% !important;
+          }
+          .hero-ctas button {
+            width: 100% !important;
+            padding: 14px 24px !important;
+          }
+          .hero-trust {
+            justify-content: center !important;
+            margin-top: 40px !important;
+            gap: 16px !important;
+          }
+        }
       `}</style>
     </section>
   );
